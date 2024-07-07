@@ -14,9 +14,9 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
         return user;
     }
 
-    public async Task<User?> UpdateAsync(User user)
+    public async Task<User?> UpdateAsync(long id,User user)
     {
-        if (await context.Set<User>().FindAsync(user.Id) == null)
+        if (await context.Set<User>().FindAsync(id) == null)
         {
             throw new Exception("User not found");
         }
@@ -27,10 +27,6 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
 
     public async Task<User?> DeleteAsync(User user)
     {
-        if (await context.Set<User>().FindAsync(user.Id) == null)
-        {
-            throw new Exception("User not found");
-        }
         context.Set<User>().Remove(user);
         await context.SaveChangesAsync();
         return user;

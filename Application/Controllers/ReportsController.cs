@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Net.Mime;
 using Application.DTO.Request;
 using Application.DTO.Responses;
@@ -25,5 +26,52 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         await reportDomainRepository.AddAsync(report);
         var reportResponse = mapper.Map<Report, ReportResponse>(report);
         return StatusCode(201, reportResponse);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetAllReports()
+    {
+        var reports = await reportDomainRepository.GetAllAsync();
+        var reportsResponse = mapper.Map<IEnumerable<Report> , IEnumerable<ReportResponse>>(reports);
+        return Ok(reportsResponse);
+    }
+    
+    [HttpGet("{id:long}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetReportById(long id)
+    {
+        var report = await reportDomainRepository.GetByIdAsync(id);
+        if (report == null)
+        {
+            return NotFound();
+        }
+        var reportResponse = mapper.Map<Report, ReportResponse>(report);
+        return Ok(reportResponse);
+    }
+    
+    [HttpPut("{id:long}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdateReport(long id, [FromBody] ReportRequest reportRequest)
+    {
+        var report = mapper.Map<ReportRequest, Report>(reportRequest);
+        await reportDomainRepository.UpdateAsync(id,report);
+        var reportResponse = mapper.Map<Report, ReportResponse>(report);
+        return Ok(reportResponse);
+    }
+    
+    [HttpDelete("{id:long}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> DeleteReport(long id)
+    {
+        var report = await reportDomainRepository.GetByIdAsync(id);
+        if (report == null) return NotFound();
+        await reportDomainRepository.DeleteAsync(report);
+        var reportResponse = mapper.Map<Report, ReportResponse>(report);
+        return Ok(reportResponse);
     }
 }

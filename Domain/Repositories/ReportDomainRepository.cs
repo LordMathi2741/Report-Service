@@ -14,9 +14,9 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
         return report;
     }
 
-    public async Task<Report?> UpdateAsync(Report report)
+    public async Task<Report?> UpdateAsync(long id,Report report)
     {
-        var reportToUpdate= await context.Set<Report>().FindAsync(report.Id);
+        var reportToUpdate= await context.Set<Report>().FindAsync(id);
         if (reportToUpdate == null) throw new Exception("Report not found");
         context.Set<Report>().Update(reportToUpdate);
         await context.SaveChangesAsync();
@@ -25,10 +25,8 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
 
     public async Task<Report?> DeleteAsync(Report report)
     {
-        var reportToDelete = await context.Set<Report>().FindAsync(report.Id);
-        if (reportToDelete == null) throw new Exception("Report not found");
-        context.Set<Report>().Remove(reportToDelete);
+        context.Set<Report>().Remove(report);
         await context.SaveChangesAsync();
-        return reportToDelete;
+        return report;
     }
 }
