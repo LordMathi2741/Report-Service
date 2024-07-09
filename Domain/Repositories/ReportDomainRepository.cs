@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories;
 
@@ -28,5 +29,10 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
         context.Set<Report>().Remove(report);
         await context.SaveChangesAsync();
         return report;
+    }
+
+    public async Task<Report?> GetReportByTypeAsync(string type)
+    {
+        return await context.Set<Report>().Where(report => report.Type == type).FirstOrDefaultAsync();
     }
 }

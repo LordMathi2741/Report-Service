@@ -52,6 +52,17 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(reportResponse);
     }
     
+    [HttpGet("{type}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetReportByReport(string type)
+    {
+        var report = await reportDomainRepository.GetReportByTypeAsync(type);
+        if (report == null) return NotFound();
+        var reportsResponse = mapper.Map<Report , ReportResponse>(report);
+        return Ok(reportsResponse);
+    }
+    
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]

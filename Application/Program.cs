@@ -58,6 +58,14 @@ builder.Services.AddScoped<IReportDomainRepository,ReportDomainRepository>();
 builder.Services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
 
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
@@ -74,6 +82,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors("AllowAllPolicy");
 
 app.MapControllers();
 
