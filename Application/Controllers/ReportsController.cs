@@ -63,6 +63,17 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(reportsResponse);
     }
     
+    
+    [HttpGet("img/{type}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetReportImgByType(string type)
+    {
+        var report = await reportDomainRepository.GetReportImgByTypeAsync(type);
+        if (report == null) return NotFound();
+        return Ok(report);
+    }
+    
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]

@@ -10,6 +10,10 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
 {
     public async Task<Report> AddAsync(Report report)
     {
+        if (!report.ReportImage.Contains(".pdf"))
+        {
+            throw new Exception("Report must be a pdf file");
+        }
         await context.Set<Report>().AddAsync(report);
         await context.SaveChangesAsync();
         return report;
@@ -34,5 +38,10 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
     public async Task<Report?> GetReportByTypeAsync(string type)
     {
         return await context.Set<Report>().Where(report => report.Type == type).FirstOrDefaultAsync();
+    }
+
+    public async Task<string?> GetReportImgByTypeAsync(string type)
+    {
+        return await context.Set<Report>().Where(report => report.Type == type).Select(report => report.ReportImage).FirstOrDefaultAsync();
     }
 }

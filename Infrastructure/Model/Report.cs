@@ -22,6 +22,8 @@ public partial class Report
     public string VehicleIdentifier { get; set; }
     public string OperationCenter { get; set; }
     
+    public string ReportImage { get; set; }
+    
     public User User { get; private set; }
     
     public long UserId { get; set; }
@@ -42,7 +44,7 @@ public partial class Report
         
     }
     
-    public Report(string certificationNumber, string cylinderNumber, string brand, DateTime madeDate, DateTime emitDate, string type, string vehicleIdentifier, string operationCenter, long userId)
+    public Report(string certificationNumber, string cylinderNumber, string brand, DateTime madeDate, DateTime emitDate, string type, string vehicleIdentifier, string operationCenter, long userId, string reportImage)
     {
         CertificationNumber = certificationNumber;
         CylinderNumber = cylinderNumber;
@@ -55,5 +57,6 @@ public partial class Report
         CreatedDate = DateTime.Now;
         UpdatedDate = null;
         UserId = userId;
+        ReportImage = reportImage;
     }
 }

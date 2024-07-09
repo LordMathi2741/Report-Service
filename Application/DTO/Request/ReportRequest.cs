@@ -11,4 +11,5 @@ public class ReportRequest
     public string VehicleIdentifier { get; set; }
     public string OperationCenter { get; set; }
     public long UserId { get; set; }
+    public string ReportImage { get; set; }
 }

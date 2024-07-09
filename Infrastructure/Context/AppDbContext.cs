@@ -31,6 +31,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Report>().Property(r => r.EmitDate).HasColumnName("emit_date").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.VehicleIdentifier).HasColumnName("vehicle_identifier").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.OperationCenter).HasColumnName("operation_center").IsRequired();
+        modelBuilder.Entity<Report>().Property(r => r.ReportImage).HasColumnName("report_img").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.CreatedDate).HasColumnName("created_date").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.UpdatedDate).HasColumnName("updated_date");
         
