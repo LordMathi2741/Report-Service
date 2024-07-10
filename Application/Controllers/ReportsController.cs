@@ -64,12 +64,12 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
     }
     
     
-    [HttpGet("img/{type}")]
+    [HttpGet("img/{certifiedNumber}/{cylinderNumber}/{emitDate}/{vehicleIdentifier}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetReportImgByType(string type)
+    public async Task<IActionResult> GetReportImgByType(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier)
     {
-        var report = await reportDomainRepository.GetReportImgByTypeAsync(type);
+        var report = await reportDomainRepository.GetReportImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(certifiedNumber,cylinderNumber,emitDate,vehicleIdentifier);
         if (report == null) return NotFound();
         return Ok(report);
     }

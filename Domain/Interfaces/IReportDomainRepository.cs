@@ -10,5 +10,5 @@ public interface IReportDomainRepository : IInfrastructureRepository<Report>
     Task<Report?> DeleteAsync(Report report);
     
     Task<Report?> GetReportByTypeAsync(string type);
-    Task<string?> GetReportImgByTypeAsync(string type);
+    Task<string?> GetReportImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier);
 }

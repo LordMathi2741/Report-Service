@@ -40,8 +40,14 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
         return await context.Set<Report>().Where(report => report.Type == type).FirstOrDefaultAsync();
     }
 
-    public async Task<string?> GetReportImgByTypeAsync(string type)
+    public async Task<string?> GetReportImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(string certifiedNumber,
+        string cylinderNumber, DateTime emitDate, string vehicleIdentifier)
     {
-        return await context.Set<Report>().Where(report => report.Type == type).Select(report => report.ReportImage).FirstOrDefaultAsync();
+        return await context.Set<Report>().Where(report => report.CertificationNumber == certifiedNumber &&
+                                                           report.CylinderNumber == cylinderNumber &&
+                                                           report.EmitDate.Date.Year == emitDate.Date.Year &&
+                                                           report.EmitDate.Date.Month == emitDate.Date.Month &&
+                                                           report.EmitDate.Date.Day == emitDate.Date.Day &&
+                                                           report.VehicleIdentifier == vehicleIdentifier).Select(report => report.ReportImage).FirstOrDefaultAsync();
     }
 }
