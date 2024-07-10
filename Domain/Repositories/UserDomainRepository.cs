@@ -10,7 +10,11 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
 {
     public async Task<User> AddAsync(User user)
     {
-        if (!user.Email.EndsWith("@gmail.com") || !user.Email.EndsWith("@outlook.es"))
+        if (await context.Set<User>().AnyAsync(userFound => userFound.Email == user.Email))
+        {
+            throw new Exception("User with this email or password already exists");
+        }
+        if (!user.Email.EndsWith("@gmail.com") && !user.Email.EndsWith("@outlook.es"))
         {
             throw new Exception("Email must be valid");
         }
@@ -46,4 +50,5 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
     {
         return await context.Set<User>().Where(userFound => userFound.Email == email && userFound.Password == password).FirstOrDefaultAsync();
     }
+    
 }
