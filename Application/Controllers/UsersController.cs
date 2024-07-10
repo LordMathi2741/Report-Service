@@ -47,6 +47,17 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
         var userResponse = mapper.Map<User, UserResponse>(user);
         return Ok(userResponse);
     }
+
+    [HttpGet("{email}/{password}")]
+    [ProducesResponseType(200)]
+
+    public async Task<IActionResult> GetUserByEmailAndPassword(string email, string password)
+    {
+        var user = await userDomainRepository.GetUserByEmailAndPassword(email, password);
+        if (user == null) return NotFound();
+        var userResponse = mapper.Map<User, UserResponse>(user);
+        return Ok(userResponse);
+    }
     
     [HttpDelete("{id:long}")]
     [ProducesResponseType(200)]

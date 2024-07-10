@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories;
 
@@ -9,6 +10,15 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
 {
     public async Task<User> AddAsync(User user)
     {
+        if (!user.Email.EndsWith("@gmail.com") || !user.Email.EndsWith("@outlook.es"))
+        {
+            throw new Exception("Email must be valid");
+        }
+
+        if (user.Password.Length < 8 || !user.Password.Contains("@") || user.Password == "12345678")
+        {
+            throw new Exception("Password must be at least 8 characters long and contain @ symbol and not be 12345678");
+        }
         await context.Set<User>().AddAsync(user);
         await context.SaveChangesAsync();
         return user;
@@ -30,5 +40,10 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
         context.Set<User>().Remove(user);
         await context.SaveChangesAsync();
         return user;
+    }
+
+    public async Task<User?> GetUserByEmailAndPassword(string email, string password)
+    {
+        return await context.Set<User>().Where(userFound => userFound.Email == email && userFound.Password == password).FirstOrDefaultAsync();
     }
 }
