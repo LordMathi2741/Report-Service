@@ -11,6 +11,5 @@ public class ReportResponse
     public string Type { get; set; }
     public string VehicleIdentifier { get; set; }
     public string OperationCenter { get; set; }
-    public string ReportImage { get; set; }
     public long UserId { get; set; }
 }

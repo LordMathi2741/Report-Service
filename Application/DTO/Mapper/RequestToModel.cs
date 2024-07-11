@@ -10,5 +10,6 @@ public class RequestToModel : Profile
     {
         CreateMap<ReportRequest, Report>();
         CreateMap<UserRequest, User>();
+        CreateMap<ReportImgRequest, ReportImg>();
     }
 }

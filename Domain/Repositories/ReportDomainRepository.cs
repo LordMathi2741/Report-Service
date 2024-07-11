@@ -10,10 +10,6 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
 {
     public async Task<Report> AddAsync(Report report)
     {
-        if (!report.ReportImage.Contains(".pdf"))
-        {
-            throw new Exception("Report must be a pdf file");
-        }
         await context.Set<Report>().AddAsync(report);
         await context.SaveChangesAsync();
         return report;
@@ -48,6 +44,7 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
                                                            report.EmitDate.Date.Year == emitDate.Date.Year &&
                                                            report.EmitDate.Date.Month == emitDate.Date.Month &&
                                                            report.EmitDate.Date.Day == emitDate.Date.Day &&
-                                                           report.VehicleIdentifier == vehicleIdentifier).Select(report => report.ReportImage).FirstOrDefaultAsync();
+                                                           report.VehicleIdentifier == vehicleIdentifier)
+            .Select(report => report.CylinderNumber).FirstOrDefaultAsync();
     }
 }

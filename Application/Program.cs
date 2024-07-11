@@ -56,6 +56,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped(typeof(IInfrastructureRepository<>),typeof(InfrastructureRepository<>));
 builder.Services.AddScoped<IReportDomainRepository,ReportDomainRepository>();
 builder.Services.AddScoped<IUserDomainRepository, UserDomainRepository>();
+builder.Services.AddScoped<IReportImgDomainRepository, ReportImgDomainRepository>();
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
 
 // Add CORS Policy
