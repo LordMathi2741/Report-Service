@@ -67,11 +67,13 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
     [HttpGet("img/{certifiedNumber}/{cylinderNumber}/{emitDate}/{vehicleIdentifier}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> GetReportImgByType(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier)
+    public Task<IActionResult> GetReportImgByType(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier)
     {
-        var report = await reportDomainRepository.GetReportImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(certifiedNumber,cylinderNumber,emitDate,vehicleIdentifier);
-        if (report == null) return NotFound();
-        return Ok(report);
+        var report = reportDomainRepository
+                .ReportExistsByImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(certifiedNumber,
+                    cylinderNumber, emitDate, vehicleIdentifier);
+        if (!report) return Task.FromResult<IActionResult>(NotFound());
+        return Task.FromResult<IActionResult>(Ok(report));
     }
     
     [HttpPut("{id:long}")]
