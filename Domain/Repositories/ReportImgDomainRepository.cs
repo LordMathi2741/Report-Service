@@ -1,17 +1,18 @@
 using Domain.Interfaces;
 using Infrastructure.Context;
+using Infrastructure.Interfaces;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories;
 
-public class ReportImgDomainRepository(AppDbContext context) : InfrastructureRepository<ReportImg>(context),IReportImgDomainRepository
+public class ReportImgDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) : InfrastructureRepository<ReportImg>(context),IReportImgDomainRepository
 {
     public async Task<ReportImg> AddReportImgAsync(ReportImg reportImg)
     {
         await context.Set<ReportImg>().AddAsync(reportImg);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return reportImg;
     }
 

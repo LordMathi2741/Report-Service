@@ -1,12 +1,13 @@
 using Domain.Interfaces;
 using Infrastructure.Context;
+using Infrastructure.Interfaces;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories;
 
-public class UserDomainRepository(AppDbContext context) : InfrastructureRepository<User>(context), IUserDomainRepository
+public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) : InfrastructureRepository<User>(context), IUserDomainRepository
 {
     public async Task<User> AddAsync(User user)
     {
@@ -24,7 +25,7 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
             throw new Exception("Password must be at least 8 characters long and contain @ symbol and not be 12345678");
         }
         await context.Set<User>().AddAsync(user);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return user;
     }
 
@@ -35,14 +36,14 @@ public class UserDomainRepository(AppDbContext context) : InfrastructureReposito
             throw new Exception("User not found");
         }
         context.Set<User>().Update(user);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return user;
     }
 
     public async Task<User?> DeleteAsync(User user)
     {
         context.Set<User>().Remove(user);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return user;
     }
 

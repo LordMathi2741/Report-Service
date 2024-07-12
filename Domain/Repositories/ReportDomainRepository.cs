@@ -1,17 +1,18 @@
 using Domain.Interfaces;
 using Infrastructure.Context;
+using Infrastructure.Interfaces;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories;
 
-public class ReportDomainRepository(AppDbContext context) : InfrastructureRepository<Report>(context), IReportDomainRepository
+public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) : InfrastructureRepository<Report>(context), IReportDomainRepository
 {
     public async Task<Report> AddAsync(Report report)
     {
         await context.Set<Report>().AddAsync(report);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return report;
     }
 
@@ -20,14 +21,14 @@ public class ReportDomainRepository(AppDbContext context) : InfrastructureReposi
         var reportToUpdate= await context.Set<Report>().FindAsync(id);
         if (reportToUpdate == null) throw new Exception("Report not found");
         context.Set<Report>().Update(reportToUpdate);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return reportToUpdate;
     }
 
     public async Task<Report?> DeleteAsync(Report report)
     {
         context.Set<Report>().Remove(report);
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
         return report;
     }
 

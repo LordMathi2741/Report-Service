@@ -54,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped(typeof(IInfrastructureRepository<>),typeof(InfrastructureRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IReportDomainRepository,ReportDomainRepository>();
 builder.Services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 builder.Services.AddScoped<IReportImgDomainRepository, ReportImgDomainRepository>();
