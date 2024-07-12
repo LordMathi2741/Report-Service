@@ -41,6 +41,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<User>().Property(u => u.Username).HasColumnName("username").IsRequired();
         modelBuilder.Entity<User>().Property(u => u.Password).HasColumnName("password").IsRequired();
         modelBuilder.Entity<User>().Property(u => u.Email).HasColumnName("email").IsRequired();
+        modelBuilder.Entity<User>().Property(u => u.Role).HasColumnName("role").IsRequired();
+        modelBuilder.Entity<User>().Property(u => u.SocialReason).HasColumnName("social_reason").IsRequired();
+        modelBuilder.Entity<User>().Property(u => u.Ruc).HasColumnName("ruc").IsRequired();
         modelBuilder.Entity<User>().Property(u => u.CreatedDate).HasColumnName("created_date").IsRequired();
         modelBuilder.Entity<User>().Property(u => u.UpdatedDate).HasColumnName("updated_date");
 

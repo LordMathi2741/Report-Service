@@ -9,20 +9,32 @@ namespace Domain.Repositories;
 
 public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) : InfrastructureRepository<User>(context), IUserDomainRepository
 {
+    private const string Symbols = "@#$%^&*()_+";
+    private bool _containsSymbol = false;
     public async Task<User> AddAsync(User user)
     {
+        foreach (var symbol in Symbols.Where(symbol => user.Password.Contains(symbol)))
+        {
+            _containsSymbol = true;
+            break;
+        }
         if (await context.Set<User>().AnyAsync(userFound => userFound.Email == user.Email))
         {
             throw new Exception("User with this email or password already exists");
         }
-        if (!user.Email.EndsWith("@gmail.com") && !user.Email.EndsWith("@outlook.es"))
+        if (!user.Email.Contains("@"))
         {
             throw new Exception("Email must be valid");
         }
 
-        if (user.Password.Length < 8 || !user.Password.Contains("@") || user.Password == "12345678")
+        if (user.Ruc.Length != 11 || !user.Ruc.All(char.IsDigit))
         {
-            throw new Exception("Password must be at least 8 characters long and contain @ symbol and not be 12345678");
+            throw new Exception("Ruc must be 11 characters long and contain only numbers");
+        }
+
+        if (user.Password.Length < 8 || !_containsSymbol || user.Password == "12345678")
+        {
+            throw new Exception("Password must be at least 8 characters long and contain one symbol  and not be 12345678");
         }
         await context.Set<User>().AddAsync(user);
         await unitOfWork.SaveChangesAsync();
@@ -31,6 +43,10 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) 
 
     public async Task<User?> UpdateAsync(long id,User user)
     {
+        if (!Enum.IsDefined(typeof(ERoleTypes), user.Role))
+        {
+            throw new Exception("Role must be valid");
+        }
         if (await context.Set<User>().FindAsync(id) == null)
         {
             throw new Exception("User not found");

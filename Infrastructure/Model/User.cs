@@ -16,7 +16,13 @@ public partial class User
     public long Id { get; }
     public string Username { get; set; }
     public string Password { get; set; }
+    
+    public string Role { get; set; }
     public string Email { get; set; }
+    
+    public string SocialReason { get; set; }
+    
+    public string Ruc { get; set; }
     
     public ICollection<Report> Reports { get; private set; }
 }
@@ -35,6 +41,7 @@ public partial class User
         Username = username;
         Password = password;
         Email = email;
+        Role = ERoleTypes.Default.ToString();
         CreatedDate = DateTime.Now;
         UpdatedDate = null;
     }
