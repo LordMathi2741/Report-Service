@@ -76,8 +76,10 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
     [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateUserById(long id, [FromBody] UserRequest userRequest)
     {
-        var user = mapper.Map<UserRequest, User>(userRequest);
-        await userDomainRepository.UpdateAsync(id,user);
+        var user = await userDomainRepository.GetByIdAsync(id);
+        if (user == null) return NotFound();
+        mapper.Map(userRequest, user);
+        await userDomainRepository.UpdateAsync(user);
         var userResponse = mapper.Map<User, UserResponse>(user);
         return Ok(userResponse);
     }

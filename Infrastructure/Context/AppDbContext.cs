@@ -31,8 +31,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Report>().Property(r => r.CylinderNumber).HasColumnName("cylinder_number").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.MadeDate).HasColumnName("made_date").IsRequired();
         modelBuilder.Entity<Report>().Property(r => r.EmitDate).HasColumnName("emit_date").IsRequired();
-        modelBuilder.Entity<Report>().Property(r => r.VehicleIdentifier).HasColumnName("vehicle_identifier")
-            .IsRequired();
+        modelBuilder.Entity<Report>().Property(r => r.VehicleIdentifier).HasColumnName("vehicle_identifier");
         modelBuilder.Entity<Report>().Property(r => r.OperationCenter).HasColumnName("operation_center").IsRequired();
 
         modelBuilder.Entity<User>().ToTable("users");

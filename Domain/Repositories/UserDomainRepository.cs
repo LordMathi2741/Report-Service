@@ -41,16 +41,17 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) 
         return user;
     }
 
-    public async Task<User?> UpdateAsync(long id,User user)
+    public async Task<User?> UpdateAsync(User user)
     {
         if (!Enum.IsDefined(typeof(ERoleTypes), user.Role))
         {
             throw new Exception("Role must be valid");
         }
-        if (await context.Set<User>().FindAsync(id) == null)
+        if (await context.Set<User>().FindAsync(user.Id) == null)
         {
             throw new Exception("User not found");
         }
+
         context.Set<User>().Update(user);
         await unitOfWork.SaveChangesAsync();
         return user;

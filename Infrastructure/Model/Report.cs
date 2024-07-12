@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Infrastructure.Model;
 
 /**
@@ -18,6 +20,8 @@ public partial class Report
     public string Brand { get; set; }
     public DateTime MadeDate { get; set; }
     public DateTime EmitDate { get; set; }
+    
+    
     public string Type { get; set; }
     public string VehicleIdentifier { get; set; }
     public string OperationCenter { get; set; }
