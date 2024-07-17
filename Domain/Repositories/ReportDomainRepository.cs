@@ -5,6 +5,7 @@ using Infrastructure.Interfaces;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace Domain.Repositories;
 
@@ -49,22 +50,29 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
                                                          report.VehicleIdentifier == vehicleIdentifier);
     }
 
-    public async Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand)
+    public async Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand, int year)
     {
-        var reports = await context.Set<Report>().Where(report => report.Brand == brand).ToListAsync();
-        var reportsByYear = new Hashtable();
+        var reports = await context.Set<Report>()
+            .Where(report => report.Brand == brand && report.EmitDate.Year == year)
+            .ToListAsync();
+
+        Hashtable result = new Hashtable();
+
         foreach (var report in reports)
         {
-            if (reportsByYear.ContainsKey(report.EmitDate.Year))
+            var month = report.EmitDate.Month;
+            var monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+
+            if (result.ContainsKey(monthName))
             {
-                reportsByYear[report.EmitDate.Year] = (int) reportsByYear[report.EmitDate.Year] + 1;
+                result[monthName] = (int)result[monthName] + 1;
             }
             else
             {
-                reportsByYear.Add(report.EmitDate.Year, 1);
+                result.Add(monthName, 1);
             }
         }
 
-        return reportsByYear;
+        return result;
     }
 }
