@@ -75,4 +75,52 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
 
         return result;
     }
+
+    public async Task<Hashtable> GetTotalReportsByOperationCenterByYearAndMonthAsync( int year,int month)
+    {
+        var reports = await context.Set<Report>()
+            .Where(report =>  report.EmitDate.Year == year && report.EmitDate.Month == month)
+            .ToListAsync();
+
+        Hashtable result = new Hashtable();
+
+        foreach (var report in reports)
+        {
+            var operationCenter = report.OperationCenter;
+            if (result.ContainsKey(operationCenter))
+            {
+                result[operationCenter] = (int)result[operationCenter] + 1;
+            }
+            else
+            {
+                result.Add(operationCenter, 1);
+            }
+        }
+
+        return result;
+    }
+
+    public async Task<Hashtable> CountReportsTypeByYearAndMonthAsync(int year, int month)
+    {
+        var reports = await context.Set<Report>()
+            .Where(report => report.EmitDate.Year == year && report.EmitDate.Month == month)
+            .ToListAsync();
+
+        Hashtable result = new Hashtable();
+
+        foreach (var report in reports)
+        {
+            var type = report.Type;
+            if (result.ContainsKey(type))
+            {
+                result[type] = (int)result[type] + 1;
+            }
+            else
+            {
+                result.Add(type, 1);
+            }
+        }
+
+        return result;
+    }
 }

@@ -73,6 +73,26 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(reports);
     }
     
+    [HttpGet("getTotalReportsByOperationCenterByYearAndMonth/{year}/{month}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetTotalReportsByOperationCenterByYear(int year,int month)
+    {
+        var reports = await reportDomainRepository.GetTotalReportsByOperationCenterByYearAndMonthAsync(year,month);
+        if(reports.Count == 0) return NotFound();
+        return Ok(reports);
+    }
+    
+    [HttpGet("countReportsTypeByYearAndMonth/{year}/{month}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> CountReportsTypeByYearAndMonth(int year,int month)
+    {
+        var reports = await reportDomainRepository.CountReportsTypeByYearAndMonthAsync(year,month);
+        if(reports.Count == 0) return NotFound();
+        return Ok(reports);
+    }
+    
     
     [HttpGet("img/{certifiedNumber}/{cylinderNumber}/{emitDate}/{vehicleIdentifier}")]
     [ProducesResponseType(200)]
