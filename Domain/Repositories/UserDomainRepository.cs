@@ -64,6 +64,11 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) 
         return user;
     }
 
+    public async Task<string?> GetUserRoleByUsername(string username)
+    {
+        return await context.Set<User>().Where(user => user.Username == username).Select(user => user.Role).FirstOrDefaultAsync();
+    }
+
     public async Task<User?> GetUserByEmailAndPassword(string email, string password)
     {
         return await context.Set<User>().Where(userFound => userFound.Email == email && userFound.Password == password).FirstOrDefaultAsync();

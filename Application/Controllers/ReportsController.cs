@@ -63,6 +63,16 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(reportsResponse);
     }
     
+    [HttpGet("brand/{brand}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetTotalReportsByBrandByYear(string brand)
+    {
+        var reports = await reportDomainRepository.GetTotalReportsByBrandByYearAsync(brand);
+        if(reports.Count == 0) return NotFound();
+        return Ok(reports);
+    }
+    
     
     [HttpGet("img/{certifiedNumber}/{cylinderNumber}/{emitDate}/{vehicleIdentifier}")]
     [ProducesResponseType(200)]

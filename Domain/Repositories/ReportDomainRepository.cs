@@ -1,3 +1,4 @@
+using System.Collections;
 using Domain.Interfaces;
 using Infrastructure.Context;
 using Infrastructure.Interfaces;
@@ -46,5 +47,24 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
                                                          report.EmitDate.Date.Month == emitDate.Date.Month &&
                                                          report.EmitDate.Date.Day == emitDate.Date.Day &&
                                                          report.VehicleIdentifier == vehicleIdentifier);
+    }
+
+    public async Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand)
+    {
+        var reports = await context.Set<Report>().Where(report => report.Brand == brand).ToListAsync();
+        var reportsByYear = new Hashtable();
+        foreach (var report in reports)
+        {
+            if (reportsByYear.ContainsKey(report.EmitDate.Year))
+            {
+                reportsByYear[report.EmitDate.Year] = (int) reportsByYear[report.EmitDate.Year] + 1;
+            }
+            else
+            {
+                reportsByYear.Add(report.EmitDate.Year, 1);
+            }
+        }
+
+        return reportsByYear;
     }
 }

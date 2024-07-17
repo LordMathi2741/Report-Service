@@ -4,6 +4,7 @@ public class ReportRequest
 {
     public string CertificationNumber { get; set; }
     public string CylinderNumber { get; set; }
+    public string CylinderType { get; set; }
     public string Brand { get; set; }
     public DateTime MadeDate { get; set; }
     public DateTime EmitDate { get; set; }

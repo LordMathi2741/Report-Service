@@ -48,6 +48,16 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
         return Ok(userResponse);
     }
 
+    [HttpGet("getUserRoleByUsername/{username}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetUserRoleByUsername(string username)
+    {
+        var currentRole = await userDomainRepository.GetUserRoleByUsername(username);
+        if (currentRole == null) return NotFound();
+        return Ok(currentRole);
+    }
+
     [HttpGet("{email}/{password}")]
     [ProducesResponseType(200)]
 

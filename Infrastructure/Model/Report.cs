@@ -17,6 +17,8 @@ public partial class Report
     public long Id { get;  }
     public string CertificationNumber { get; set; }
     public string CylinderNumber { get; set; }
+    
+    public string CylinderType { get; set; }
     public string Brand { get; set; }
     public DateTime MadeDate { get; set; }
     public DateTime EmitDate { get; set; }
@@ -42,6 +44,7 @@ public partial class Report
     {
         CertificationNumber = string.Empty;
         CylinderNumber = string.Empty;
+        CylinderType = string.Empty;
         Brand = string.Empty;
         MadeDate = DateTime.Now;
         EmitDate = DateTime.Now;
@@ -51,10 +54,11 @@ public partial class Report
         
     }
     
-    public Report(string certificationNumber, string cylinderNumber, string brand, DateTime madeDate, DateTime emitDate, string type, string vehicleIdentifier, string operationCenter, long userId)
+    public Report(string certificationNumber, string cylinderNumber, string cylinderType, string brand, DateTime madeDate, DateTime emitDate, string type, string vehicleIdentifier, string operationCenter, long userId)
     {
         CertificationNumber = certificationNumber;
         CylinderNumber = cylinderNumber;
+        CylinderType = cylinderType;
         Brand = brand;
         MadeDate = madeDate;
         EmitDate = emitDate;

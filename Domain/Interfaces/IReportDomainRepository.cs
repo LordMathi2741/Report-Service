@@ -1,3 +1,4 @@
+using System.Collections;
 using Infrastructure.Interfaces;
 using Infrastructure.Model;
 
@@ -11,4 +12,5 @@ public interface IReportDomainRepository : IInfrastructureRepository<Report>
     
     Task<Report?> GetReportByTypeAsync(string type);
     bool ReportExistsByImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier);
+    Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand);
 }
