@@ -77,6 +77,11 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork,I
         return user;
     }
 
+    public async Task<User?> GetUsernameByEmail(string email)
+    {
+        return await context.Set<User>().FirstOrDefaultAsync(user => user.Email == email);
+    }
+
     public async Task<string?> GetUserRoleByUsername(string username)
     {
         return await context.Set<User>().Where(user => user.Username == username).Select(user => user.Role).FirstOrDefaultAsync();

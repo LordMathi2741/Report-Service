@@ -14,10 +14,11 @@ namespace Application.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [ProducesResponseType(500)]
 [ProducesResponseType(400)]
+[ProducesResponseType(401)]
 public class UsersController(IMapper mapper, IUserDomainRepository userDomainRepository) : ControllerBase
 {
-    [HttpPost]
     [AllowAnonymous]
+    [HttpPost]
     [ProducesResponseType(201)]
     public async Task<IActionResult> SignUp([FromBody] UserRequest userRequest)
     {
@@ -47,7 +48,18 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
         var userResponse = mapper.Map<User, UserResponse>(user);
         return Ok(userResponse);
     }
-
+    [AllowAnonymous]
+    [HttpGet("getUsername/{email}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetUserByUsername(string email)
+    {
+        var user = await userDomainRepository.GetUsernameByEmail(email);
+        if (user == null) return NotFound();
+        var userResponse = mapper.Map<User, UserResponse>(user);
+        return Ok(userResponse);
+    }
+    [AllowAnonymous]
     [HttpGet("getUserRoleByUsername/{username}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
@@ -57,9 +69,8 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
         if (currentRole == null) return NotFound();
         return Ok(currentRole);
     }
-
-    [HttpGet("sign-in/{email}/{password}")]
     [AllowAnonymous]
+    [HttpGet("sign-in/{email}/{password}")]
     [ProducesResponseType(200)]
 
     public async Task<IActionResult> SignIn(string email, string password)

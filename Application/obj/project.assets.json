@@ -3288,6 +3288,7 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.7",
       "Microsoft.AspNetCore.OpenApi >= 8.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.6",
+      "Microsoft.IdentityModel.JsonWebTokens >= 8.0.0",
       "MySql.EntityFrameworkCore >= 8.0.5",
       "Pomelo.EntityFrameworkCore.MySql >= 8.0.2",
       "Security >= 1.0.0",
@@ -3356,6 +3357,10 @@
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
             "version": "[8.0.6, )"
+          },
+          "Microsoft.IdentityModel.JsonWebTokens": {
+            "target": "Package",
+            "version": "[8.0.0, )"
           },
           "MySql.EntityFrameworkCore": {
             "target": "Package",

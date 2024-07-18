@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
-
+[Route("/api/v1/[controller]")]
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [ProducesResponseType(400)]
 [ProducesResponseType(500)]
-[Route("/api/v1/[controller]")]
+[ProducesResponseType(401)]
 public class ReportsController(IReportDomainRepository reportDomainRepository, IMapper mapper) : ControllerBase
 {
     [HttpPost]

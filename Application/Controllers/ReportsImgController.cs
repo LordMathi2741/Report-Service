@@ -4,15 +4,16 @@ using Application.DTO.Responses;
 using AutoMapper;
 using Domain.Interfaces;
 using Infrastructure.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
-
 [ApiController]
 [Produces(MediaTypeNames.Application.Json)]
 [Route("/api/v1/[controller]")]
 [ProducesResponseType(400)]
 [ProducesResponseType(500)]
+[ProducesResponseType(401)]
 public class ReportsImgController(IReportImgDomainRepository reportImgDomainRepository, IMapper mapper) : ControllerBase
 {
     [HttpGet]

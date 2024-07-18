@@ -6,13 +6,28 @@ using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Security.Interfaces;
 using Security.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllPolicy",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json", true, true)
+    .Build();
+
+builder.Services.AddSingleton(configuration);
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(dbOptions =>
@@ -41,12 +56,12 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "Reports API",
-        Description = "Reports Rest API Documentation",
+        Title = "Hiperfast API",
+        Description = "Hiperfast Rest API Documentation",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
-            Name = "LordMathi2741",
+            Name = "Hiperfast",
             Url = new Uri("https://github.com/LordMathi2741")
         },
         License = new OpenApiLicense
@@ -81,14 +96,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Configuration
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    .AddJsonFile("appsettings.json", true, true)
-    .Build();
-
-builder.Services.AddSingleton(configuration);
-
 
 builder.Services.AddScoped(typeof(IInfrastructureRepository<>),typeof(InfrastructureRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -98,15 +105,6 @@ builder.Services.AddScoped<IReportImgDomainRepository, ReportImgDomainRepository
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
-
-// Add CORS Policy
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllPolicy",
-        policy => policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
@@ -127,13 +125,15 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
+app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
 app.UseMiddleware<AuthenticacionMiddleware>();
+
 
 app.UseCors("AllowAllPolicy");
 
 app.MapControllers();
-
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseHttpsRedirection();
 
