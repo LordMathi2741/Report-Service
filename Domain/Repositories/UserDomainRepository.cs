@@ -4,14 +4,15 @@ using Infrastructure.Interfaces;
 using Infrastructure.Model;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Security.Interfaces;
 
 namespace Domain.Repositories;
 
-public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) : InfrastructureRepository<User>(context), IUserDomainRepository
+public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork,IEncryptService encryptService, ITokenService tokenService) : InfrastructureRepository<User>(context), IUserDomainRepository
 {
     private const string Symbols = "@#$%^&*()_+";
     private bool _containsSymbol = false;
-    public async Task<User> AddAsync(User user)
+    public async Task<User> SignUp(User user)
     {
         foreach (var symbol in Symbols.Where(symbol => user.Password.Contains(symbol)))
         {
@@ -36,7 +37,19 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) 
         {
             throw new Exception("Password must be at least 8 characters long and contain one symbol  and not be 12345678");
         }
-        await context.Set<User>().AddAsync(user);
+        var userHashed = new User()
+        {
+            Username = user.Username,
+            Role = user.Role,
+            Password = encryptService.Encrypt(user.Password),
+            Email = user.Email,
+            Ruc = user.Ruc,
+            SocialReason = user.SocialReason,
+            CreatedDate = DateTimeOffset.UtcNow
+
+        };
+
+        await context.Set<User>().AddAsync(userHashed);
         await unitOfWork.SaveChangesAsync();
         return user;
     }
@@ -69,9 +82,19 @@ public class UserDomainRepository(AppDbContext context, IUnitOfWork unitOfWork) 
         return await context.Set<User>().Where(user => user.Username == username).Select(user => user.Role).FirstOrDefaultAsync();
     }
 
-    public async Task<User?> GetUserByEmailAndPassword(string email, string password)
+    public async Task<string?>SignIn(string email, string password)
     {
-        return await context.Set<User>().Where(userFound => userFound.Email == email && userFound.Password == password).FirstOrDefaultAsync();
+        var user = await context.Set<User>().FirstOrDefaultAsync(userFound => userFound.Email == email);
+        if (user != null)
+        {
+            if (encryptService.VerifyPassword(password, user.Password))
+            {
+                var token = tokenService.GenerateToken(user);
+        
+                return token;
+            }
+        }
+        return null;
     }
     
 }

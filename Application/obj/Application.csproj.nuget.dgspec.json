@@ -31,6 +31,9 @@
               },
               "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj": {
                 "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj"
+              },
+              "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj": {
+                "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj"
               }
             }
           }
@@ -48,6 +51,10 @@
             "AutoMapper": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.7, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
@@ -117,6 +124,9 @@
             "projectReferences": {
               "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj": {
                 "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj"
+              },
+              "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj": {
+                "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj"
               }
             }
           }
@@ -195,6 +205,77 @@
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj",
+        "projectName": "Security",
+        "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/Security.csproj",
+        "packagesPath": "/Users/lordmathi2741/.nuget/packages/",
+        "outputPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Security/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/lordmathi2741/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj": {
+                "projectPath": "/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Infrastructure/Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.IdentityModel.JsonWebTokens": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [

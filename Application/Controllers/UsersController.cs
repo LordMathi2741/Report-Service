@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Application.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("/api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [ProducesResponseType(500)]
@@ -18,11 +17,12 @@ namespace Application.Controllers;
 public class UsersController(IMapper mapper, IUserDomainRepository userDomainRepository) : ControllerBase
 {
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(201)]
-    public async Task<IActionResult> CreateUser([FromBody] UserRequest userRequest)
+    public async Task<IActionResult> SignUp([FromBody] UserRequest userRequest)
     {
         var user = mapper.Map<UserRequest, User>(userRequest);
-        await userDomainRepository.AddAsync(user);
+        await userDomainRepository.SignUp(user);
         var userResponse = mapper.Map<User, UserResponse>(user);
         return StatusCode(201, userResponse);
     }
@@ -58,15 +58,15 @@ public class UsersController(IMapper mapper, IUserDomainRepository userDomainRep
         return Ok(currentRole);
     }
 
-    [HttpGet("{email}/{password}")]
+    [HttpGet("sign-in/{email}/{password}")]
+    [AllowAnonymous]
     [ProducesResponseType(200)]
 
-    public async Task<IActionResult> GetUserByEmailAndPassword(string email, string password)
+    public async Task<IActionResult> SignIn(string email, string password)
     {
-        var user = await userDomainRepository.GetUserByEmailAndPassword(email, password);
+        var user = await userDomainRepository.SignIn(email, password);
         if (user == null) return NotFound();
-        var userResponse = mapper.Map<User, UserResponse>(user);
-        return Ok(userResponse);
+        return Ok(user);
     }
     
     [HttpDelete("{id:long}")]

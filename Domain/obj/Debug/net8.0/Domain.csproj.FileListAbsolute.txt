@@ -14,3 +14,5 @@
 /Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Domain/obj/Debug/net8.0/refint/Domain.dll
 /Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Domain/obj/Debug/net8.0/Domain.pdb
 /Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Domain/obj/Debug/net8.0/ref/Domain.dll
+/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Domain/bin/Debug/net8.0/Security.dll
+/Users/lordmathi2741/Documents/Cursos/Aplicaciones Web-Upc/C#/ReportService/Domain/bin/Debug/net8.0/Security.pdb

@@ -1,11 +1,16 @@
 using Application.DTO.Mapper;
+using Application.Middleware;
 using Domain.Interfaces;
 using Domain.Repositories;
 using Infrastructure.Context;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Security.Interfaces;
+using Security.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +56,39 @@ builder.Services.AddSwaggerGen(options =>
         }
         
     });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
+
+// Configuration
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json", true, true)
+    .Build();
+
+builder.Services.AddSingleton(configuration);
+
 
 builder.Services.AddScoped(typeof(IInfrastructureRepository<>),typeof(InfrastructureRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -59,6 +96,8 @@ builder.Services.AddScoped<IReportDomainRepository,ReportDomainRepository>();
 builder.Services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 builder.Services.AddScoped<IReportImgDomainRepository, ReportImgDomainRepository>();
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IEncryptService, EncryptService>();
 
 // Add CORS Policy
 builder.Services.AddCors(options =>
@@ -68,6 +107,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
 
 var app = builder.Build();
 
@@ -85,6 +127,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<AuthenticacionMiddleware>();
 
 app.UseCors("AllowAllPolicy");
 

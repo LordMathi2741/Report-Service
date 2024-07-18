@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Application.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Produces(MediaTypeNames.Application.Json)]
 [ProducesResponseType(400)]
 [ProducesResponseType(500)]
