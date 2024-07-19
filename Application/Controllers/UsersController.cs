@@ -18,7 +18,7 @@ namespace Application.Controllers;
 public class UsersController(IMapper mapper, IUserDomainRepository userDomainRepository) : ControllerBase
 {
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("sign-up")]
     [ProducesResponseType(201)]
     public async Task<IActionResult> SignUp([FromBody] UserRequest userRequest)
     {

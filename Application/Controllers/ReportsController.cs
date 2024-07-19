@@ -1,11 +1,10 @@
-using System.Collections;
+
 using System.Net.Mime;
 using Application.DTO.Request;
 using Application.DTO.Responses;
 using AutoMapper;
 using Domain.Interfaces;
 using Infrastructure.Model;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
@@ -71,6 +70,27 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         if(reports.Count == 0) return NotFound();
         return Ok(reports);
     }
+
+    [HttpGet("vehicle-identifier/{vehicleIdentifier}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetReportByVehicleIdentifier(string vehicleIdentifier)
+    {
+        var report = await reportDomainRepository.GetReportByVehicleIdentifier(vehicleIdentifier);
+        if (report == null) return NotFound();
+        return Ok(report);
+    }
+
+    [HttpGet("cylinder-number/{cylinderNumber}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetReportByCylinderNumber(string cylinderNumber)
+    {
+        var report = await reportDomainRepository.GetReportByCylinderNumber(cylinderNumber);
+        if (report == null) return NotFound();
+        return Ok(report);
+    }
+    
     
     [HttpGet("getTotalReportsByOperationCenterByYearAndMonth/{year}/{month}")]
     [ProducesResponseType(200)]

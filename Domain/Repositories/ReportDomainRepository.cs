@@ -39,6 +39,18 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
         return await context.Set<Report>().Where(report => report.Type == type).FirstOrDefaultAsync();
     }
 
+    public async Task<Report?> GetReportByVehicleIdentifier(string vehicleIdentifier)
+    {
+        return await context.Set<Report>().Where(report => report.VehicleIdentifier == vehicleIdentifier)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<Report?> GetReportByCylinderNumber(string cylinderNumber)
+    {
+        return await context.Set<Report>().Where(report => report.CylinderNumber == cylinderNumber)
+            .FirstOrDefaultAsync();
+    }
+
     public bool ReportExistsByImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(string certifiedNumber,
         string cylinderNumber, DateTime emitDate, string vehicleIdentifier)
     {
