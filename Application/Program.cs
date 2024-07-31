@@ -102,6 +102,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IReportDomainRepository,ReportDomainRepository>();
 builder.Services.AddScoped<IUserDomainRepository, UserDomainRepository>();
 builder.Services.AddScoped<IReportImgDomainRepository, ReportImgDomainRepository>();
+builder.Services.AddScoped<IClientDomainRepository, ClientDomainRepository>();
 builder.Services.AddAutoMapper(typeof(ModelToResponse), typeof(RequestToModel));
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();

@@ -40,7 +40,7 @@ public class ReportsImgController(IReportImgDomainRepository reportImgDomainRepo
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> AddReportImg([FromBody] ReportImgRequest reportImgRequest)
+    public async Task<IActionResult> CreateReportImg([FromBody] ReportImgRequest reportImgRequest)
     {
         var reportImg = mapper.Map<ReportImgRequest, ReportImg>(reportImgRequest);
         await reportImgDomainRepository.AddReportImgAsync(reportImg);

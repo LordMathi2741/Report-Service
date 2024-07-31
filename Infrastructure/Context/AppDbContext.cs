@@ -5,15 +5,8 @@ namespace Infrastructure.Context;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get;  }
-    public DbSet<Report> Reports { get;  }
-    public DbSet<ReportImg> ReportsImg { get; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            throw new Exception("No connection string configured.");
-        }
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.AddInterceptors();
     }
@@ -53,7 +46,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<ReportImg>().Property(rm => rm.Id).HasColumnName("id").ValueGeneratedOnAdd();
         modelBuilder.Entity<ReportImg>().Property(rm => rm.FileName).HasColumnName("file_name").IsRequired();
         modelBuilder.Entity<ReportImg>().Property(rm => rm.Image).HasColumnName("img").IsRequired();
-        
+
+        modelBuilder.Entity<Client>().ToTable("clients");
+        modelBuilder.Entity<Client>().HasKey(c => c.Id);
+        modelBuilder.Entity<Client>().Property(c => c.Id).HasColumnName("id").ValueGeneratedOnAdd();
+        modelBuilder.Entity<Client>().Property(c => c.FirstName).HasColumnName("firstname").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.LastName).HasColumnName("lastname").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.Address).HasColumnName("address").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.Number).HasColumnName("phone_number").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.Department).HasColumnName("department").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.CertifiedCompany).HasColumnName("certified_company").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.Location).HasColumnName("location").IsRequired();
+        modelBuilder.Entity<Client>().Property(c => c.CertifiedName).HasColumnName("certified_number").IsRequired();
+        modelBuilder.Entity<Client>().HasOne<Report>().WithOne().HasForeignKey<Client>(c => c.ReportId);
 
 
         modelBuilder.Entity<Report>().HasOne(r => r.User).WithMany(u => u.Reports).HasForeignKey(r => r.UserId);

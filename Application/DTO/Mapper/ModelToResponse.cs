@@ -11,6 +11,7 @@ public class ModelToResponse : Profile
         CreateMap<User, UserResponse>();
         CreateMap<Report, ReportResponse>();
         CreateMap<ReportImg, ReportImgResponse>();
+        CreateMap<Client, ClientResponse>();
     }
     
 }
