@@ -19,4 +19,6 @@ public interface IReportDomainRepository : IInfrastructureRepository<Report>
     Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand, int year);
     Task<Hashtable> GetTotalReportsByOperationCenterByYearAndMonthAsync( int year,int month);
     Task<Hashtable> CountReportsTypeByYearAndMonthAsync(int year, int month);
+    
+    Task<Hashtable> CountTotalReportsByYear(int year);
 }

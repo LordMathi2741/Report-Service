@@ -28,9 +28,6 @@ public partial class Report
     public string VehicleIdentifier { get; set; }
     public string OperationCenter { get; set; }
     
-    public User User { get; private set; }
-    
-    public ReportImg ReportImg { get; private set; }
     
     public long UserId { get; set; }
     

@@ -7,8 +7,6 @@ public partial class ReportImg
     
     public string Image { get; set; }
     
-    public Report Report { get; private set; }
-    
     public long ReportId { get; set; }
 }
 

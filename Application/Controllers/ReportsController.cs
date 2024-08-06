@@ -71,7 +71,7 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(reports);
     }
 
-    [HttpGet("vehicle-identifier/{vehicleIdentifier}")]
+    [HttpGet("get-by-vehicle-identifier/{vehicleIdentifier}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReportByVehicleIdentifier(string vehicleIdentifier)
@@ -81,7 +81,7 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Ok(report);
     }
 
-    [HttpGet("cylinder-number/{cylinderNumber}")]
+    [HttpGet("get-by-cylinder-number/{cylinderNumber}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetReportByCylinderNumber(string cylinderNumber)
@@ -108,6 +108,16 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
     public async Task<IActionResult> CountReportsTypeByYearAndMonth(int year,int month)
     {
         var reports = await reportDomainRepository.CountReportsTypeByYearAndMonthAsync(year,month);
+        if(reports.Count == 0) return NotFound();
+        return Ok(reports);
+    }
+    
+    [HttpGet("countTotalReportsByYear/{year}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> CountTotalReportsByYearAndMonth(int year)
+    {
+        var reports = await reportDomainRepository.CountTotalReportsByYear(year);
         if(reports.Count == 0) return NotFound();
         return Ok(reports);
     }

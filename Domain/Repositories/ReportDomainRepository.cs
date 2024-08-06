@@ -135,4 +135,30 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
 
         return result;
     }
+
+    public async Task<Hashtable> CountTotalReportsByYear(int year)
+    {
+        var reports = await context.Set<Report>()
+            .Where(report => report.EmitDate.Year == year)
+            .ToListAsync();
+
+        Hashtable result = new Hashtable();
+
+        foreach (var report in reports)
+        {
+            var month = report.EmitDate.Month;
+            var monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+
+            if (result.ContainsKey(monthName))
+            {
+                result[monthName] = (int)result[monthName] + 1;
+            }
+            else
+            {
+                result.Add(monthName, 1);
+            }
+        }
+
+        return result;
+    }
 }
