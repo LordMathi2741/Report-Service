@@ -140,8 +140,10 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
     [ProducesResponseType(404)]
     public async Task<IActionResult> UpdateReport(long id, [FromBody] ReportRequest reportRequest)
     {
-        var report = mapper.Map<ReportRequest, Report>(reportRequest);
-        await reportDomainRepository.UpdateAsync(id,report);
+        var report = await reportDomainRepository.GetByIdAsync(id);
+        if (report == null) return NotFound();
+        mapper.Map(reportRequest, report);
+        await reportDomainRepository.UpdateAsync(report);
         var reportResponse = mapper.Map<Report, ReportResponse>(report);
         return Ok(reportResponse);
     }

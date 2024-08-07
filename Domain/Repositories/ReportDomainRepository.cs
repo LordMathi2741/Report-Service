@@ -18,13 +18,11 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
         return report;
     }
 
-    public async Task<Report?> UpdateAsync(long id,Report report)
+    public async Task<Report?> UpdateAsync(Report report)
     {
-        var reportToUpdate= await context.Set<Report>().FindAsync(id);
-        if (reportToUpdate == null) throw new Exception("Report not found");
-        context.Set<Report>().Update(reportToUpdate);
+        context.Set<Report>().Update(report);
         await unitOfWork.SaveChangesAsync();
-        return reportToUpdate;
+        return report;
     }
 
     public async Task<Report?> DeleteAsync(Report report)
