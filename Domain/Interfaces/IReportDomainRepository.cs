@@ -16,6 +16,8 @@ public interface IReportDomainRepository : IInfrastructureRepository<Report>
 
     Task<Report?> GetReportByCylinderNumber(string cylinderNumber);
     bool ReportExistsByImgByCertifiedNumberAndCylinderNumberAndEmitDateAndVehicleIdentifier(string certifiedNumber, string cylinderNumber, DateTime emitDate, string vehicleIdentifier);
+    
+    bool ReportExistsByCertifiedNumberAndCylinderNumberAndEmitDateAndBrand(string certifiedNumber, string cylinderNumber, DateTime emitDate, string brand);
     Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand, int year);
     Task<Hashtable> GetTotalReportsByOperationCenterByYearAndMonthAsync( int year,int month);
     Task<Hashtable> CountReportsTypeByYearAndMonthAsync(int year, int month);

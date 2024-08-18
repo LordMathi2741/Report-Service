@@ -60,6 +60,18 @@ public class ReportDomainRepository(AppDbContext context, IUnitOfWork unitOfWork
                                                          report.VehicleIdentifier == vehicleIdentifier);
     }
 
+    public bool ReportExistsByCertifiedNumberAndCylinderNumberAndEmitDateAndBrand(string certifiedNumber, string cylinderNumber,
+        DateTime emitDate, string brand)
+    {
+        return context.Set<Report>().Any(report => report.CylinderNumber == cylinderNumber &&
+                                                   report.CertificationNumber == certifiedNumber &&
+                                                   report.EmitDate.Date.Year == emitDate.Date.Year &&
+                                                   report.EmitDate.Date.Month == emitDate.Date.Month &&
+                                                   report.EmitDate.Date.Day == emitDate.Date.Day &&
+                                                   report.Brand == brand
+                                                   && report.VehicleIdentifier == "None"
+        );
+    }
     public async Task<Hashtable> GetTotalReportsByBrandByYearAsync(string brand, int year)
     {
         var reports = await context.Set<Report>()

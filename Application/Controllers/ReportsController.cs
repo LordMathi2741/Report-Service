@@ -135,6 +135,18 @@ public class ReportsController(IReportDomainRepository reportDomainRepository, I
         return Task.FromResult<IActionResult>(Ok(report));
     }
     
+    [HttpGet("img/pec/{certifiedNumber}/{cylinderNumber}/{emitDate}/{brand}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public Task<IActionResult> GetPecImgByType(string certifiedNumber, string cylinderNumber, DateTime emitDate, string brand)
+    {
+        var report =
+            reportDomainRepository.ReportExistsByCertifiedNumberAndCylinderNumberAndEmitDateAndBrand(certifiedNumber,
+                cylinderNumber, emitDate, brand);
+        if (!report) return Task.FromResult<IActionResult>(NotFound());
+        return Task.FromResult<IActionResult>(Ok(report));
+    }
+    
     [HttpPut("{id:long}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
