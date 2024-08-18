@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Model;
 
@@ -20,6 +19,7 @@ public partial class Report
     
     public string CylinderType { get; set; }
     public string Brand { get; set; }
+    
     public DateTime MadeDate { get; set; }
     public DateTime EmitDate { get; set; }
     

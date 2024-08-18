@@ -47,9 +47,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<ReportImg>().Property(rm => rm.FileName).HasColumnName("file_name").IsRequired();
         modelBuilder.Entity<ReportImg>().Property(rm => rm.Image).HasColumnName("img").IsRequired();
         
-
-
-        modelBuilder.Entity<Report>().HasOne<User>().WithMany().HasForeignKey(r => r.UserId);
+        modelBuilder.Entity<ReportImg>().HasOne<Report>().WithMany().HasForeignKey(rm => rm.ReportId)
+            .HasForeignKey(rm => rm.ReportId);
         modelBuilder.Entity<ReportImg>().HasOne<Report>().WithMany().HasForeignKey(rm => rm.ReportId)
             .HasForeignKey(rm => rm.ReportId);
     }
